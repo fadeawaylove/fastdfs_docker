@@ -39,4 +39,4 @@ WORKDIR /fdfs
 COPY entrypoint.sh ./
 RUN chmod +x /fdfs/entrypoint.sh
 
-ENTRYPOINT ["/fdfs/entrypoint.sh"]
+ENTRYPOINT ["sh","/fdfs/entrypoint.sh"]
