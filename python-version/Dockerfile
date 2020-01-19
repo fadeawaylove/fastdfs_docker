@@ -34,7 +34,8 @@ RUN git clone https://github.com/happyfish100/fastdfs.git --depth 1 \
     && ./make.sh \
     && ./make.sh install \
     && cd /fdfs/ \
-    && rm -rf /fdfs/packages
+    && rm -rf /fdfs/packages \
+    && mkdir $BASE_PATH
 
 # 复制运行脚本
 WORKDIR /fdfs

@@ -18,25 +18,25 @@ if server_type == "storage":
     with open("/etc/fdfs/storage.conf.sample", "r") as fr, open("/etc/fdfs/storage.conf", "w") as fw:
         for line in fr:
             # 替换base_path
-            if line.startswith("base_path="):
+            if line.startswith("base_path"):
                 line = "base_path=" + base_path + "\n"
             # 替换第一个存储目录，就设置为base_path
-            if line.startswith("store_path0="):
+            if line.startswith("store_path0"):
                 line = "base_path=" + base_path + "\n"
             # 替换track_server
-            if line.startswith("tracker_server="):
+            if line.startswith("tracker_server"):
                 temp_line = ""
                 for t in tracker_servers:
                     temp_line += "tracker_server=" + t + "\n"
                 line = temp_line
             # 替换storage服务的port
-            if line.startswith("port="):
+            if line.startswith("port"):
                 line = "port=" + store_port + "\n"
             # 替换http服务的port
-            if line.startswith("http.server_port="):
+            if line.startswith("http.server_port"):
                 line = "http.server_port=" + http_server_port + "\n"
             # 替换storage所属的group
-            if line.startswith("group_name="):
+            if line.startswith("group_name"):
                 line = "group_name=" + group_name + "\n"
             fw.write(line)
     # 开启服务
@@ -53,10 +53,10 @@ elif server_type == "tracker":
     with open("/etc/fdfs/tracker.conf.sample", "r") as fr, open("/etc/fdfs/tracker.conf", "w") as fw:
         for line in fr:
             # 替换base_path
-            if line.startswith("base_path="):
+            if line.startswith("base_path"):
                 line = "base_path=" + base_path + "\n"
             # tracker的port
-            if line.startswith("port="):
+            if line.startswith("port"):
                 line = "port=" + fdfs_port + "\n"
             fw.write(line)
     # 开启服务

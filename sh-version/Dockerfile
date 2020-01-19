@@ -32,11 +32,12 @@ RUN git clone https://github.com/happyfish100/fastdfs.git --depth 1 \
     && ./make.sh \
     && ./make.sh install \
     && cd /fdfs/ \
-    && rm -rf /fdfs/packages
+    && rm -rf /fdfs/packages/ \
+    && apk add dos2unix
 
 # 复制运行脚本
 WORKDIR /fdfs
 COPY entrypoint.sh ./
-RUN chmod +x /fdfs/entrypoint.sh
+RUN chmod +x /fdfs/entrypoint.sh && dos2unix /fdfs/entrypoint.sh
 
-ENTRYPOINT ["sh","/fdfs/entrypoint.sh"]
+ENTRYPOINT ["/fdfs/entrypoint.sh"]
