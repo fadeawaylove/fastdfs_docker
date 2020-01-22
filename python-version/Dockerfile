@@ -16,6 +16,10 @@ ENV HTTP_PORT 8888
 # storage服务所属的组
 ENV GROUP_NAME group1
 
+# 复制nginx配置文件
+ADD conf/http.conf /etc/fdfs/
+ADD conf/mime.types /etc/fdfs/
+
 # 安装依赖
 RUN apk update \
     && apk add --no-cache  git gcc libc-dev make automake autoconf libtool pcre pcre-dev zlib zlib-dev openssl-dev wget vim
@@ -32,8 +36,19 @@ WORKDIR /fdfs/packages
 RUN git clone https://github.com/happyfish100/fastdfs.git --depth 1 \
     && cd fastdfs/ \
     && ./make.sh \
-    && ./make.sh install \
-    && cd /fdfs/ \
+    && ./make.sh install
+
+# 安装nginx
+WORKDIR /fdfs/packages
+RUN git clone https://github.com/happyfish100/fastdfs-nginx-module.git --depth 1 \
+    && wget http://nginx.org/download/nginx-1.15.4.tar.gz \
+    && tar -zxvf nginx-1.15.4.tar.gz \
+    && cd nginx-1.15.4/  \
+    && ./configure --add-module=/usr/local/src/fastdfs-nginx-module/src/   \
+    && make && make install
+
+# 删除文件
+RUN cd /fdfs/ \
     && rm -rf /fdfs/packages \
     && mkdir $BASE_PATH
 
