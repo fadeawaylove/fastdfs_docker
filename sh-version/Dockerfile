@@ -1,5 +1,5 @@
 # 基于 alpine
-FROM alpine:3.10
+FROM alpine:3.6
 # 作者信息
 MAINTAINER daigua<1032939141@qq.com>
 # 环境变量
@@ -14,9 +14,14 @@ ENV HTTP_PORT 8888
 # storage服务所属的组
 ENV GROUP_NAME group1
 
+# 换源,不然太慢了
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # 安装依赖
 RUN apk update \
-    && apk add --no-cache  git gcc libc-dev make automake autoconf libtool pcre pcre-dev zlib zlib-dev openssl-dev wget vim
+    && apk add --no-cache git gcc libc-dev make automake autoconf libtool pcre pcre-dev zlib zlib-dev openssl-dev wget vim
+
+#RUN yum install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim dos2unix -y
+
 
 # 安装libfastcommon
 WORKDIR /fdfs/packages
@@ -25,19 +30,18 @@ RUN git clone https://github.com/happyfish100/libfastcommon.git --depth 1 \
     && ./make.sh \
     && ./make.sh install
 
-# 安装FastDFS
+## 安装FastDFS
 WORKDIR /fdfs/packages
 RUN git clone https://github.com/happyfish100/fastdfs.git --depth 1 \
     && cd fastdfs/ \
     && ./make.sh \
     && ./make.sh install \
     && cd /fdfs/ \
-    && rm -rf /fdfs/packages/ \
-    && apk add dos2unix
+    && rm -rf /fdfs/packages/
 
 # 复制运行脚本
 WORKDIR /fdfs
 COPY entrypoint.sh ./
-RUN chmod +x /fdfs/entrypoint.sh && dos2unix /fdfs/entrypoint.sh
+RUN chmod +x /fdfs/entrypoint.sh && sed -i 's/\r//' /fdfs/entrypoint.sh
 
 ENTRYPOINT ["/fdfs/entrypoint.sh"]

@@ -2,7 +2,7 @@
 type_tracker="tracker"
 type_storage="storage"
 orgin_base_path="/fdfs/fdfs_data"
-transfer_base_path="\\/fdfs\\/fdfs_data"
+transfer_base_path="\/fdfs\/fdfs_data"
 
 server_type=$1
 echo $server_type
@@ -40,4 +40,4 @@ else
     echo "wrong server type! [${server_type}]"
 fi
 
-/bin/bash
+tail -f  /dev/null
