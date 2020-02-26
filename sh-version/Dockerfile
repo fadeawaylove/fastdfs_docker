@@ -20,9 +20,6 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk update \
     && apk add --no-cache git gcc libc-dev make automake autoconf libtool pcre pcre-dev zlib zlib-dev openssl-dev wget vim
 
-#RUN yum install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim dos2unix -y
-
-
 # 安装libfastcommon
 WORKDIR /fdfs/packages
 RUN git clone https://github.com/happyfish100/libfastcommon.git --depth 1 \
